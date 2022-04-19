@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements FragmentLista.OnF
     public void onMarcaSelected(Marca marca) {
         //Log.v("comunicacion",juego.getNombre());
         Intent intent = new Intent(getApplicationContext(), SecondActivity.class);
-        intent.putExtra("marca", marca);
+        intent.putExtra("marca", marca.getNombre());
         startActivity(intent);
     }
 

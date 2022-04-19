@@ -8,8 +8,8 @@
     <fragment
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/fragment_modelos"
-        android:tag="fragment_lista_Modelos"
+        android:id="@+id/fragment_dinamico_coches"
+        android:tag="fragment_lista_coches"
         class="com.example.practicaintermedia.fragments.SecondFragmentLista"
         />
 

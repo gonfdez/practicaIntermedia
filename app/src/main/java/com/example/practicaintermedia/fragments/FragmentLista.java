@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +36,7 @@ public class FragmentLista extends Fragment {
     public interface OnFragmentMarcaListener{
         void onMarcaSelected(Marca marca);
     }
-    // 2º paso: Creo la interfaz
+    // 2º paso 1/2: Creo la interfaz
     private OnFragmentMarcaListener listener;
 
 
@@ -43,11 +44,13 @@ public class FragmentLista extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+        // 2º paso 2/2: Doy valor al listener creado
+        listener = (OnFragmentMarcaListener) context;
         arrayMarcas = new ArrayList();
 
         arrayMarcas.add(new Marca("BMW", R.drawable.bmw));
-        arrayMarcas.add(new Marca("Tesla",R.drawable.mercedes));
-        arrayMarcas.add(new Marca("Mercedes Benz",R.drawable.tesla));
+        arrayMarcas.add(new Marca("Tesla",R.drawable.tesla));
+        arrayMarcas.add(new Marca("Mercedes Benz",R.drawable.mercedes));
         arrayMarcas.add(new Marca("Ferrari",R.drawable.ferrari));
         arrayMarcas.add(new Marca("Audi",R.drawable.audi));
         arrayMarcas.add(new Marca("Opel",R.drawable.opel));
