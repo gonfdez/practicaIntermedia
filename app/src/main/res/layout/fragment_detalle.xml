@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical"
+         >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            xmlns:android="http://schemas.android.com/apk/res/android">
+
+            <TextView
+                android:id="@+id/marca_detalle"
+                android:layout_width="168dp"
+                android:layout_height="wrap_content"
+                android:layout_row="1"
+                android:layout_column="0"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:textSize="35sp"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/modelo_detalle"
+                android:layout_width="167dp"
+                android:layout_height="wrap_content"
+                android:layout_row="0"
+                android:layout_column="1"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:textSize="35sp"
+                android:textColor="@color/black"/>
+
+        </LinearLayout>
+
+
+        <ImageView
+            android:id="@+id/img_detalle"
+            android:layout_width="220dp"
+            android:layout_height="220dp"
+            android:adjustViewBounds="false" />
+
+
+        <TextView
+            android:id="@+id/potencia_detalle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:width="50dp"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textColor="@color/purple_700"/>
+
+        <TextView
+            android:id="@+id/precio_detalle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:width="50dp"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textColor="@color/purple_700"/>
+
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements FragmentLista.OnF
     }
 
     // 5º paso: defino el metodo que se ejecuta al seleccionar.
-    // Llama a la segunda activity pasandola el objeto marca en cuestión.
+    // Llama a la segunda activity pasandola la string de la marca en cuestión.
     @Override
     public void onMarcaSelected(Marca marca) {
         //Log.v("comunicacion",marca.getNombre());

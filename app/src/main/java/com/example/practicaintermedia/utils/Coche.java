@@ -1,6 +1,8 @@
 package com.example.practicaintermedia.utils;
 
-public class Coche {
+import java.io.Serializable;
+
+public class Coche implements Serializable {
 
     private final String marca;
     private String modelo;

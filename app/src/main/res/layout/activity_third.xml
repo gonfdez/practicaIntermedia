@@ -3,14 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SecondActivity">
+    tools:context=".ThirdActivity">
 
     <fragment
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/fragment_dinamico_coches"
-        android:tag="fragment_lista_coches"
-        class="com.example.practicaintermedia.fragments.SecondFragmentLista"
+        android:id="@+id/fragment_detalle_coches"
+        android:tag="fragment_detalle_coches"
+        class="com.example.practicaintermedia.fragments.ThirdFragmentDetalle"
         />
 
 </LinearLayout>

@@ -7,9 +7,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 
+import com.example.practicaintermedia.fragments.FragmentLista;
 import com.example.practicaintermedia.fragments.SecondFragmentLista;
+import com.example.practicaintermedia.utils.Coche;
 
-public class SecondActivity extends AppCompatActivity {
+
+public class SecondActivity extends AppCompatActivity implements SecondFragmentLista.OnFragmentCocheListener {
 
     private SecondFragmentLista fragmentLista;
     private String marca;
@@ -28,8 +31,18 @@ public class SecondActivity extends AppCompatActivity {
         fragmentLista = (SecondFragmentLista) fragmentManager
                 .findFragmentById(R.id.fragment_dinamico_coches);
 
-        //Comunico al fragments que datos debe mostrar
+        //Comunico al fragment que datos debe mostrar
         fragmentLista.comunicarDato(marca);
     }
+
+    // 5º paso: defino el metodo que se ejecuta al seleccionar.
+    // Llama a la segunda activity pasandola el objeto marca en cuestión.
+    @Override
+    public void onCocheSelected(Coche coche) {
+        Intent intent = new Intent(getApplicationContext(), ThirdActivity.class);
+        intent.putExtra("coche", coche);
+        startActivity(intent);
+    }
+
 
 }

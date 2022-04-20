@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -27,9 +28,21 @@ public class SecondFragmentLista extends Fragment {
     private ArrayAdapter<Coche> adaptadorCoches;
     private ArrayList<Coche> arrayCoches, listaFiltrada;
 
+    // 1º paso: defino interfaz de call back
+    public interface OnFragmentCocheListener{
+        void onCocheSelected(Coche coche);
+    }
+    // 2º paso 1/2: Creo la interfaz
+    private SecondFragmentLista.OnFragmentCocheListener listener;
+
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+
+        // 2º paso 2/2: Doy valor al listener creado
+        listener = (SecondFragmentLista.OnFragmentCocheListener) context;
+
         arrayCoches= new ArrayList<Coche>();
         listaFiltrada = new ArrayList<Coche>();
 
@@ -49,9 +62,9 @@ public class SecondFragmentLista extends Fragment {
         arrayCoches.add(new Coche("Mercedes Benz", "Clase E", R.drawable.clasee, 0, 0));
         arrayCoches.add(new Coche("Mercedes Benz", "Clase G", R.drawable.claseg, 0, 0));
         
-        arrayCoches.add(new Coche("Ferrari", "250 Testarosa", R.drawable.testarossa, 0, 0));
+        arrayCoches.add(new Coche("Ferrari", "250 Testarossa", R.drawable.testarossa, 0, 0));
         arrayCoches.add(new Coche("Ferrari", "458 Spider", R.drawable.spider, 0, 0));
-        arrayCoches.add(new Coche("Ferrari", "LaFerari", R.drawable.laferrari, 0, 0));
+        arrayCoches.add(new Coche("Ferrari", "LaFerrari", R.drawable.laferrari, 0, 0));
         arrayCoches.add(new Coche("Ferrari", "812 GTS", R.drawable.gts, 0, 0));
 
         // Seteo el adaptador del fragment dinamico
@@ -66,11 +79,6 @@ public class SecondFragmentLista extends Fragment {
                 listaFiltrada.add(item);
             }
         }
-        /*
-        for (Coche i : listaFiltrada) {
-            Log.v("listaFiltrada", i.getModelo() );
-        }
-        */
         adaptadorCoches.notifyDataSetChanged();
     }
 
@@ -91,6 +99,14 @@ public class SecondFragmentLista extends Fragment {
         listaCoches = view.findViewById(R.id.listaMarcas_fragment);
         listaCoches.setAdapter(adaptadorCoches);
 
+        //4º Paso: Seteamos la comunicacion al clickarse una casilla de Coche
+        listaCoches.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Coche coche = adaptadorCoches.getItem(i);
+                listener.onCocheSelected(coche);
+            }
+        });
     }
 
     class AdaptadorCoches extends ArrayAdapter<Coche> {
