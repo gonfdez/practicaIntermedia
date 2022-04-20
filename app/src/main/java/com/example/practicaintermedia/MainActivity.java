@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements FragmentLista.OnF
     // Llama a la segunda activity pasandola el objeto marca en cuestión.
     @Override
     public void onMarcaSelected(Marca marca) {
-        //Log.v("comunicacion",juego.getNombre());
+        //Log.v("comunicacion",marca.getNombre());
         Intent intent = new Intent(getApplicationContext(), SecondActivity.class);
         intent.putExtra("marca", marca.getNombre());
         startActivity(intent);

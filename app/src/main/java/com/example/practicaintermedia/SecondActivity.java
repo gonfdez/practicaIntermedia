@@ -21,9 +21,8 @@ public class SecondActivity extends AppCompatActivity {
         setContentView(R.layout.activity_second);
 
         // Capturo el string de la marca seleccionada en la MainActivity
-        marca = getIntent().getExtras()
-                .getString("marca");
-        Log.v("comunicacion",marca);
+        marca = getIntent().getExtras().getString("marca");
+        // Log.v("comunicacion",marca);
 
         fragmentManager = this.getSupportFragmentManager();
         fragmentLista = (SecondFragmentLista) fragmentManager

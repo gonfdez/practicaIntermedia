@@ -4,13 +4,12 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-   <!-- <ImageView
+    <ImageView
         android:id="@+id/imgCoche"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center"
-        android:adjustViewBounds="false"
-        android:padding="20dp" /> -->
+        android:adjustViewBounds="false" />
 
     <TextView
         android:id="@+id/txtCoche"
