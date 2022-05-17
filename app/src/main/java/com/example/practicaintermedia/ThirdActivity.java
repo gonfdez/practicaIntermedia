@@ -4,11 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.practicaintermedia.fragments.SecondFragmentLista;
 import com.example.practicaintermedia.fragments.ThirdFragmentDetalle;
 import com.example.practicaintermedia.utils.Coche;
 
@@ -17,7 +15,6 @@ public class ThirdActivity extends AppCompatActivity {
     private ThirdFragmentDetalle fragmentDetalle;
     private FragmentManager fragmentManager;
     private Coche coche;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +59,8 @@ public class ThirdActivity extends AppCompatActivity {
         switch (item.getItemId())
         {
             // Si pulsa compartir envia correo electronico
+            // Probema: a veces se queda pillado en una pantalla en la que sale "wait for sync" no se porque
+            // ni como solucionarlo
             case R.id.action_share:
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.putExtra(Intent.EXTRA_EMAIL, new

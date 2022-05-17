@@ -39,6 +39,7 @@ public class SecondActivity extends AppCompatActivity implements SecondFragmentL
     // Llama a la segunda activity pasandola el objeto marca en cuestión.
     @Override
     public void onCocheSelected(Coche coche) {
+        Log.v("comunicacion", coche.getModelo());
         Intent intent = new Intent(getApplicationContext(), ThirdActivity.class);
         intent.putExtra("coche", coche);
         startActivity(intent);

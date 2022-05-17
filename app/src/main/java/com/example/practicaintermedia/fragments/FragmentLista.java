@@ -6,48 +6,43 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import com.example.practicaintermedia.R;
+import com.example.practicaintermedia.adaptadores.AdapterMarcas;
 import com.example.practicaintermedia.utils.Marca;
-
-
-
-//Clase que instancia el Fragmento
 
 public class FragmentLista extends Fragment {
 
     private View view;
-    private ListView listaMarcas;
-    private ArrayAdapter<Marca> adaptadorMarcas;
     private ArrayList<Marca> arrayMarcas;
+    private RecyclerView listaMarcas;
+    private AdapterMarcas adapterMarcas;
+    private Context contexto;
 
-    // 1º paso: defino interfaz de call back
+    // Gestion de evento click en el Recycler (Pasos anteriores en AdapterMarcas)
+    // 5º Genero una interfaz de callback para llamar a la Activity cuando una
+    // marca es seleccionada y poder cambiar de Activity
     public interface OnFragmentMarcaListener{
         void onMarcaSelected(Marca marca);
     }
-    // 2º paso 1/2: Creo la interfaz
+    // 6º Genero una instancia de la interfaz para poder llamar al metodo onMarcaSelected
     private OnFragmentMarcaListener listener;
-
-
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        // 2º paso 2/2: Doy valor al listener creado
-        listener = (OnFragmentMarcaListener) context;
-        arrayMarcas = new ArrayList();
+        // Necesito guardar el contexto para configurar el recycler cuando se genera la vista
+        this.contexto = context;
 
+        // Gestiono la lista de marcas
+        arrayMarcas = new ArrayList();
         arrayMarcas.add(new Marca("BMW", R.drawable.bmw));
         arrayMarcas.add(new Marca("Tesla",R.drawable.tesla));
         arrayMarcas.add(new Marca("Mercedes Benz",R.drawable.mercedes));
@@ -61,56 +56,49 @@ public class FragmentLista extends Fragment {
         arrayMarcas.add(new Marca("Peugeot",R.drawable.peugeot));
         arrayMarcas.add(new Marca("Seat",R.drawable.seat));
 
-        adaptadorMarcas = new AdaptadorMarcas((AppCompatActivity) context);
+        // Ahora generamos el adaptador con la lista de marcas
+        adapterMarcas=new AdapterMarcas( (AppCompatActivity) context, arrayMarcas);
+
+        // 7º Doy valor al listener creado
+        listener = (OnFragmentMarcaListener) context;
+        // 8º Generamos el metodo OnClickListener que
+        // gestiona el evento proveniente del elemento clickado en el adaptador
+        adapterMarcas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Encuentro el elemento clickado
+                Marca marca = arrayMarcas.get(listaMarcas.getChildAdapterPosition(view));
+                // Le envio a Activity el objeto Marca correspondiente
+                listener.onMarcaSelected(marca);
+            }
+        });
+        // Siguientes pasos en la activity correspondiente a este fragment (MainActivity)
     }
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_lista,container,
+        // Encuentro el xml del fragment
+        view = inflater.inflate(R.layout.fragment_lista_recycler,container,
                 false);
-        // hago las instancias aqui
+        // Encuentro el RecyclerView
+        listaMarcas = view.findViewById(R.id.recyclerId);
+        // Configuro el Recycler para que sea una lista vertical
+        listaMarcas.setLayoutManager(new LinearLayoutManager(contexto, LinearLayoutManager.VERTICAL,false));
+
         return view;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        listaMarcas = view.findViewById(R.id.listaMarcas_fragment);
-        listaMarcas.setAdapter(adaptadorMarcas);
+        // Pasamos el adaptador al Recycler para que se infle con los datos
+        listaMarcas.setAdapter(adapterMarcas);
+    }
 
-        //4º Paso: Seteamos la comunicacion al clickarse una casilla de Marca
-        listaMarcas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Marca marca = adaptadorMarcas.getItem(i);
-                listener.onMarcaSelected(marca);
-            }
-        });
-
-        }
-
-    class AdaptadorMarcas extends ArrayAdapter<Marca> {
-
-        AppCompatActivity appCompatActivity;
-        AdaptadorMarcas(AppCompatActivity context) {
-            super(context, R.layout.list_item_marca, arrayMarcas);
-            appCompatActivity = context;
-        }
-
-        public View getView(int position, View convertView, ViewGroup parent) {
-            LayoutInflater inflater = appCompatActivity.getLayoutInflater();
-            View item = inflater.inflate(R.layout.list_item_marca, null);
-            TextView txtMarca = item.findViewById(R.id.txtMarca);
-            txtMarca.setText(arrayMarcas.get(position).getNombre());
-            ImageView imgMarca = item.findViewById(R.id.imgMarca);
-            imgMarca.setImageResource(arrayMarcas.get(position).getImg());
-            return(item);
-        }
-    }    
-        
 }
 
 

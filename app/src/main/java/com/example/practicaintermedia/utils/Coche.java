@@ -7,10 +7,10 @@ public class Coche implements Serializable {
     private final String marca;
     private String modelo;
     private int img;
-    private final int cvPower;
-    private final float precio;
+    private int cvPower;
+    private int precio;
 
-    public Coche(String marca, String modelo, int img, int cvPower, float precio) {
+    public Coche(String marca, String modelo, int img, int cvPower, int precio) {
         this.marca = marca;
         this.modelo = modelo;
         this.img = img;
@@ -42,7 +42,7 @@ public class Coche implements Serializable {
         return cvPower;
     }
 
-    public float getPrecio() {
+    public int getPrecio() {
         return precio;
     }
 }

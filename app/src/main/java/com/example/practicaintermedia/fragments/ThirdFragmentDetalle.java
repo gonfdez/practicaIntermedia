@@ -23,24 +23,20 @@ public class ThirdFragmentDetalle extends Fragment  {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_detalle,container, false);
-
         img = view.findViewById(R.id.img_detalle);
         marca = view.findViewById(R.id.marca_detalle);
         modelo = view.findViewById(R.id.modelo_detalle);
         potencia = view.findViewById(R.id.potencia_detalle);
         precio = view.findViewById(R.id.precio_detalle);
-
         return view;
     }
     
     public void comunicarCoche(Coche coche){
-
         img.setImageResource(coche.getImg());
         modelo.setText(coche.getModelo());
         marca.setText(coche.getMarca());
         potencia.setText(coche.getCvPower()+" cv");
         precio.setText(coche.getPrecio()+"€");
-
     }
 
 

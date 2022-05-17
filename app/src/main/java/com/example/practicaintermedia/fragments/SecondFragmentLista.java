@@ -6,80 +6,121 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import com.example.practicaintermedia.R;
+import com.example.practicaintermedia.adaptadores.AdapterCoches;
 import com.example.practicaintermedia.utils.Coche;
-import com.example.practicaintermedia.utils.Marca;
+
 import java.util.ArrayList;
 
 public class SecondFragmentLista extends Fragment {
 
     private View view;
-    private ListView listaCoches;
-    private ArrayAdapter<Coche> adaptadorCoches;
     private ArrayList<Coche> arrayCoches, listaFiltrada;
+    private RecyclerView listaCoches;
+    private AdapterCoches adapterCoches;
+    private Context contexto;
 
-    // 1º paso: defino interfaz de call back
+    // Gestion de evento click en el Recycler (Pasos anteriores en AdapterCoches)
+    // 5º Genero una interfaz de callback para llamar a la Activity cuando una
+    // coche es seleccionada y poder cambiar de Activity
     public interface OnFragmentCocheListener{
         void onCocheSelected(Coche coche);
     }
-    // 2º paso 1/2: Creo la interfaz
-    private SecondFragmentLista.OnFragmentCocheListener listener;
-
+    // 6º Genero una instancia de la interfaz para poder llamar al metodo onCocheSelected
+    private OnFragmentCocheListener listener;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+        // Necesito guardar el contexto para configurar el recycler cuando se genera la vista
+        this.contexto = context;
 
-        // 2º paso 2/2: Doy valor al listener creado
-        listener = (SecondFragmentLista.OnFragmentCocheListener) context;
-
-        arrayCoches= new ArrayList<Coche>();
+        // Gestiono la lista de coches
+        arrayCoches = new ArrayList<Coche>();
         listaFiltrada = new ArrayList<Coche>();
 
-        arrayCoches.add(new Coche("BMW", "x1", R.drawable.x1, 0, 0));
-        arrayCoches.add(new Coche("BMW", "x2", R.drawable.x2, 0, 0));
-        arrayCoches.add(new Coche("BMW", "x3", R.drawable.x3, 0, 0));
+        arrayCoches.add(new Coche("BMW", "X1", R.drawable.x1, 150, 34750));
+        arrayCoches.add(new Coche("BMW", "X2 Híbrido Enchufable", R.drawable.x2, 178, 49300));
+        arrayCoches.add(new Coche("BMW", "X3", R.drawable.x3, 360, 52600));
 
-        arrayCoches.add(new Coche("Tesla", "Model 3", R.drawable.model3, 0, 0));
-        arrayCoches.add(new Coche("Tesla", "Model Y", R.drawable.modely, 0, 0));
-        arrayCoches.add(new Coche("Tesla", "Model S", R.drawable.models, 0, 0));
-        arrayCoches.add(new Coche("Tesla", "Model X", R.drawable.modelx, 0, 0));
-        arrayCoches.add(new Coche("Tesla", "Roadster", R.drawable.roadster, 0, 0));
+        arrayCoches.add(new Coche("Tesla", "Model 3 Bev Long Range", R.drawable.model3, 491, 51990));
+        arrayCoches.add(new Coche("Tesla", "Model Y Bev Long Range", R.drawable.modely, 514, 66970));
+        arrayCoches.add(new Coche("Tesla", "Model S Plaid+", R.drawable.models, 1100, 89900));
+        arrayCoches.add(new Coche("Tesla", "Model X Bev Long Range", R.drawable.modelx, 670, 115970));
+        arrayCoches.add(new Coche("Tesla", "Roadster", R.drawable.roadster, 1500, 172000));
 
-        arrayCoches.add(new Coche("Mercedes Benz", "Clase A", R.drawable.clasea, 0, 0));
-        arrayCoches.add(new Coche("Mercedes Benz", "Clase B", R.drawable.claseb, 0, 0));
-        arrayCoches.add(new Coche("Mercedes Benz", "Clase C", R.drawable.clasec, 0, 0));
-        arrayCoches.add(new Coche("Mercedes Benz", "Clase E", R.drawable.clasee, 0, 0));
-        arrayCoches.add(new Coche("Mercedes Benz", "Clase G", R.drawable.claseg, 0, 0));
-        
-        arrayCoches.add(new Coche("Ferrari", "250 Testarossa", R.drawable.testarossa, 0, 0));
-        arrayCoches.add(new Coche("Ferrari", "458 Spider", R.drawable.spider, 0, 0));
-        arrayCoches.add(new Coche("Ferrari", "LaFerrari", R.drawable.laferrari, 0, 0));
-        arrayCoches.add(new Coche("Ferrari", "812 GTS", R.drawable.gts, 0, 0));
+        arrayCoches.add(new Coche("Mercedes Benz", "Clase A 180", R.drawable.clasea, 136, 31579));
+        arrayCoches.add(new Coche("Mercedes Benz", "Clase B 180", R.drawable.claseb, 136, 35167));
+        arrayCoches.add(new Coche("Mercedes Benz", "Clase C 180", R.drawable.clasec, 170, 39062));
+        arrayCoches.add(new Coche("Mercedes Benz", "Clase E 450 4MATIC", R.drawable.clasee, 367, 73384));
+        arrayCoches.add(new Coche("Mercedes Benz", "Clase G", R.drawable.claseg, 585, 137607));
 
-        // Seteo el adaptador del fragment dinamico
-        adaptadorCoches = new SecondFragmentLista.AdaptadorCoches((AppCompatActivity) context, listaFiltrada);
+        arrayCoches.add(new Coche("Ferrari", "250 Testarossa", R.drawable.testarossa, 390, 130000));
+        arrayCoches.add(new Coche("Ferrari", "458 Spider", R.drawable.spider, 570, 257899));
+        arrayCoches.add(new Coche("Ferrari", "LaFerrari", R.drawable.laferrari, 800, 13000000));
+        arrayCoches.add(new Coche("Ferrari", "812 GTS", R.drawable.gts, 799, 339000));
+
+        arrayCoches.add(new Coche("Audi", "Q3", R.drawable.q3, 190, 43700));
+        arrayCoches.add(new Coche("Audi", "A5", R.drawable.a5, 215, 57600));
+        arrayCoches.add(new Coche("Audi", "RS7 Sportback", R.drawable.rs7, 430, 132900));
+
+        arrayCoches.add(new Coche("Opel", "Vivaro", R.drawable.vivaro, 215, 38700));
+        arrayCoches.add(new Coche("Opel", "Insignia", R.drawable.insignia, 140, 24500));
+
+        arrayCoches.add(new Coche("Lamborghini", "Huracan", R.drawable.huracan, 600, 110900));
+        arrayCoches.add(new Coche("Lamborghini", "Aventador", R.drawable.aventador, 880, 175890));
+        arrayCoches.add(new Coche("Lamborghini", "Gallardo", R.drawable.gallardo, 740, 145900));
+        arrayCoches.add(new Coche("Lamborghini", "Diablo", R.drawable.diablo, 410, 196800));
+
+        arrayCoches.add(new Coche("Volvo", "XC 90", R.drawable.xc90, 320, 67590));
+        arrayCoches.add(new Coche("Volvo", "XC 60", R.drawable.xc60, 150, 36900));
+
+        arrayCoches.add(new Coche("McLaren", "P1 GTR", R.drawable.p1, 1150, 360900));
+        arrayCoches.add(new Coche("McLaren", "650S", R.drawable.s650, 750, 240900));
+        arrayCoches.add(new Coche("McLaren", "F1 GTR", R.drawable.f1gtr, 870, 352900));
+        arrayCoches.add(new Coche("McLaren", "MP4-12C", R.drawable.mp4, 660, 256850));
+
+        arrayCoches.add(new Coche("Volkswagen", "Golf", R.drawable.golf, 115, 17500));
+
+        arrayCoches.add(new Coche("Peugeot", "406", R.drawable.bravolimamike, 90, 500));
+
+        arrayCoches.add(new Coche("Seat", "Ibiza", R.drawable.ibiza, 115, 14500));
+
+        // Ahora generamos el adaptador con la lista de coches filtrados
+        adapterCoches=new AdapterCoches( (AppCompatActivity) context, listaFiltrada);
+
+        // 7º Doy valor al listener creado
+        listener = (OnFragmentCocheListener) context;
+        // 8º Generamos el metodo OnClickListener que
+        // gestiona el evento proveniente del elemento clickado en el adaptador
+        adapterCoches.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Encuentro el elemento clickado
+                Coche coche = listaFiltrada.get(listaCoches.getChildAdapterPosition(view));
+                // Le envio a Activity el objeto Coche correspondiente
+                listener.onCocheSelected(coche);
+            }
+        });
+        // Siguientes pasos en la activity correspondiente a este fragment (SecondActivity)
     }
 
     // Metodo para recibir el dato segun el cual filtrar la informacion
-    public void comunicarDato(String marca){
-        // Modifica la lista para enseñar solo los coches de esa marca
+    public void comunicarDato(String coche){
+        listaFiltrada.clear();
+        // Modifica la lista para enseñar solo los coches de esa coche
         for ( Coche item : arrayCoches ) {
-            if (item.getMarca().equalsIgnoreCase(marca)){
+            if (item.getMarca().equalsIgnoreCase(coche)){
                 listaFiltrada.add(item);
             }
         }
-        adaptadorCoches.notifyDataSetChanged();
+        adapterCoches.notifyDataSetChanged();
     }
 
     @Nullable
@@ -87,52 +128,22 @@ public class SecondFragmentLista extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_lista,container,
+        // Encuentro el xml del fragment
+        view = inflater.inflate(R.layout.fragment_lista_recycler,container,
                 false);
-        // hago las instancias aqui
+        // Encuentro el RecyclerView
+        listaCoches = view.findViewById(R.id.recyclerId);
+        // Configuro el Recycler para que sea una lista vertical
+        listaCoches.setLayoutManager(new LinearLayoutManager(contexto, LinearLayoutManager.VERTICAL,false));
+
         return view;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        listaCoches = view.findViewById(R.id.listaMarcas_fragment);
-        listaCoches.setAdapter(adaptadorCoches);
-
-        //4º Paso: Seteamos la comunicacion al clickarse una casilla de Coche
-        listaCoches.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Coche coche = adaptadorCoches.getItem(i);
-                listener.onCocheSelected(coche);
-            }
-        });
-    }
-
-    class AdaptadorCoches extends ArrayAdapter<Coche> {
-
-        AppCompatActivity appCompatActivity;
-
-        AdaptadorCoches(AppCompatActivity context, ArrayList<Coche> arrayData) {
-            super(context, R.layout.list_item_coche, arrayData);
-            appCompatActivity = context;
-        }
-
-        public View getView(int position, View convertView, ViewGroup parent) {
-            LayoutInflater inflater = appCompatActivity.getLayoutInflater();
-            View item = inflater.inflate(R.layout.list_item_coche, null);
-
-            // Imagen del modelo
-            ImageView imgCoche = item.findViewById(R.id.imgCoche);
-            imgCoche.setImageResource(listaFiltrada.get(position).getImg());
-
-            //Texto del modelo
-            TextView txtCoche = item.findViewById(R.id.txtCoche);
-            txtCoche.setText(listaFiltrada.get(position).getModelo());
-
-            return(item);
-        }
-
+        // Pasamos el adaptador al Recycler para que se infle con los datos
+        listaCoches.setAdapter(adapterCoches);
     }
 
 }
